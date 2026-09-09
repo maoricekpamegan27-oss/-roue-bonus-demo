@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Assistant Bonus — Démo</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f58bb2;
+  color: #292744;
+}
+
+/* EN-TÊTE */
+.header {
+  height: 92px;
+  background: linear-gradient(135deg, #45466f, #292944);
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 12px 18px;
+  gap: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,.25);
+}
+
+.back {
+  font-size: 34px;
+}
+
+.avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #ff6b19;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 29px;
+}
+
+.headerText {
+  flex: 1;
+}
+
+.headerText strong {
+  display: block;
+  font-size: 22px;
+}
+
+.online {
+  color: #8df09c;
+  font-size: 15px;
+  margin-top: 3px;
+}
+
+.menu {
+  font-size: 28px;
+}
+
+/* CONTENU */
+.page {
+  min-height: calc(100vh - 92px);
+  padding: 18px 13px 35px;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255,255,255,.16) 0 2px, transparent 3px),
+    radial-gradient(circle at 80% 60%, rgba(255,255,255,.12) 0 2px, transparent 3px),
+    #f58bb2;
+}
+
+.demo {
+  text-align: center;
+  background: #fff0a6;
+  color: #5b4c00;
+  border-radius: 20px;
+  padding: 7px 12px;
+  margin: 4px auto 14px;
+  max-width: 310px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* ROUE */
+.wheelBox {
+  position: relative;
+  width: min(365px, 94vw);
+  height: min(365px, 94vw);
+  margin: 10px auto 25px;
+}
+
+#wheel {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transition: transform 4.2s cubic-bezier(.12,.75,.12,1);
+  filter: drop-shadow(0 8px 8px rgba(0,0,0,.25));
+}
+
+.pointer {
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  top: -2px;
+  transform: translateX(-50%);
+
+  width: 0;
+  height: 0;
+
+  border-left: 22px solid transparent;
+  border-right: 22px solid transparent;
+  border-top: 42px solid #ff3b42;
+
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,.3));
+}
+
+.centerButton {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+
+  width: 82px;
+  height: 82px;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+  background: #45466f;
+  border: 9px solid #ff697e;
+
+  color: white;
+  font-size: 34px;
+  font-weight: bold;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* CARTE RÉSULTAT */
+.resultCard {
+  background: rgba(255,255,255,.36);
+  border-radius: 19px;
+  padding: 18px;
+  text-align: center;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+
+.resultCard p {
+  margin: 5px 0;
+  font-size: 18px;
+}
+
+.resultAmount {
+  font-size: 30px;
+  font-weight: 900;
+  color: #d6285c;
+  margin-top: 8px;
+}
+
+/* DEUXIÈME CARTE */
+.card {
+  background: #ffe0eb;
+  border-radius: 19px;
+  padding: 21px 18px;
+  box-shadow: 0 5px 14px rgba(0,0,0,.12);
+}
+
+.card h2 {
+  margin: 0 0 12px;
+  font-size: 23px;
+}
+
+.card p {
+  font-size: 18px;
+  line-height: 1.35;
+  margin: 9px 0;
+}
+
+.bigAmount {
+  color: #d92962;
+  font-size: 34px;
+  font-weight: 900;
+}
+
+.download {
+  display: block;
+  margin-top: 17px;
+  padding: 17px;
+  border-radius: 13px;
+  background: #45466f;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  border: 0;
+  width: 100%;
+}
+
+.download:active {
+  transform: scale(.98);
+}
+
+.warning {
+  text-align: center;
+  font-size: 11px;
+  color: #6b5260;
+  line-height: 1.4;
+  margin: 17px 8px 0;
+}
+
+/* PETIT ÉCRAN */
+@media (max-width: 360px) {
+  .headerText strong {
+    font-size: 19px;
+  }
+
+  .wheelBox {
+    margin-top: 5px;
+  }
+
+  .card p {
+    font-size: 16px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- EN-TÊTE -->
+<div class="header">
+
+  <div class="back">‹</div>
+
+  <div class="avatar">♙</div>
+
+  <div class="headerText">
+    <strong>Assistant Bonus</strong>
+    <div class="online">● en ligne</div>
+  </div>
+
+  <div class="menu">⋮</div>
+
+</div>
+
+
+<div class="page">
+
+  <div class="demo">
+    DÉMONSTRATION — ARGENT FICTIF
+  </div>
+
+
+  <!-- GRANDE ROUE -->
+  <div class="wheelBox">
+
+    <div class="pointer"></div>
+
+    <canvas id="wheel" width="700" height="700"></canvas>
+
+    <div class="centerButton">
+      ✓
+    </div>
+
+  </div>
+
+
+  <!-- RÉSULTAT -->
+  <div class="resultCard">
+
+    <p>Vous avez gagné :</p>
+
+    <div class="resultAmount" id="smallResult">
+      $3,000
+    </div>
+
+    <p>
+      bonus de simulation dans l'application
+    </p>
+
+  </div>
+
+
+  <!-- CARTE FÉLICITATIONS -->
+  <div class="card">
+
+    <h2>🎉 Félicitations !</h2>
+
+    <p>
+      Vous avez obtenu
+      <span class="bigAmount" id="bigResult">$3,000</span>
+      sur votre solde virtuel.
+    </p>
+
+    <p>
+      Ceci est une simulation destinée à la démonstration.
+    </p>
+
+    <button class="download" onclick="downloadDemo()">
+      ↓ &nbsp; VOIR LA DÉMO
+    </button>
+
+  </div>
+
+
+  <div class="warning">
+    Le résultat affiché est fictif. Aucun argent réel n'est crédité.
+    Cette page est uniquement une maquette éducative.
+  </div>
+
+</div>
+
+
+<script>
+
+/* MONTANTS DE LA ROUE */
+const amounts = [
+  "$3",
+  "$150",
+  "$25",
+  "$250",
+  "$50",
+  "$1,000"
+];
+
+const colors = [
+  "#f21d24",
+  "#45466f",
+  "#ff7410",
+  "#f21d24",
+  "#45466f",
+  "#ff7410"
+];
+
+const canvas = document.getElementById("wheel");
+const ctx = canvas.getContext("2d");
+
+const center = 350;
+const radius = 325;
+
+const section = (Math.PI * 2) / amounts.length;
+
+
+/* DESSIN DE LA ROUE */
+function drawWheel() {
+
+  ctx.clearRect(0, 0, 700, 700);
+
+  for (let i = 0; i < amounts.length; i++) {
+
+    const start =
+      i * section - Math.PI / 2;
+
+    const end =
+      start + section;
+
+
+    /* SECTEUR */
+    ctx.beginPath();
+
+    ctx.moveTo(center, center);
+
+    ctx.arc(
+      center,
+      center,
+      radius,
+      start,
+      end
+    );
+
+    ctx.closePath();
+
+    ctx.fillStyle = colors[i];
+
+    ctx.fill();
+
+
+    /* SÉPARATION BLANCHE */
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 8;
+
+    ctx.stroke();
+
+
+    /* TEXTE */
+    ctx.save();
+
+    ctx.translate(center, center);
+
+    ctx.rotate(
+      start + section / 2
+    );
+
+    ctx.fillStyle = "white";
+
+    ctx.font = "bold 38px Arial";
+
+    ctx.textAlign = "center";
+
+    ctx.textBaseline = "middle";
+
+    ctx.fillText(
+      amounts[i],
+      225,
+      0
+    );
+
+    ctx.restore();
+  }
+
+
+  /* CERCLE EXTÉRIEUR */
+  ctx.beginPath();
+
+  ctx.arc(
+    center,
+    center,
+    radius,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.strokeStyle = "#ff552f";
+
+  ctx.lineWidth = 16;
+
+  ctx.stroke();
+
+}
+
+
+drawWheel();
+
+
+/* ROTATION */
+let rotation = 0;
+
+let spinning = false;
+
+
+canvas.addEventListener("click", spin);
+
+document
+  .querySelector(".centerButton")
+  .addEventListener("click", spin);
+
+
+function spin() {
+
+  if (spinning) return;
+
+  spinning = true;
+
+
+  /* Résultat fictif */
+  const selected =
+    Math.floor(
+      Math.random() * amounts.length
+    );
+
+
+  /* Plusieurs tours */
+  const extraTurns = 360 * 6;
+
+
+  rotation += extraTurns;
+
+
+  canvas.style.transform =
+    `rotate(${rotation}deg)`;
+
+
+  setTimeout(() => {
+
+    const value =
+      amounts[selected];
+
+
+    document.getElementById(
+      "smallResult"
+    ).textContent =
+      value;
+
+
+    document.getElementById(
+      "bigResult"
+    ).textContent =
+      value;
+
+
+    spinning = false;
+
+  }, 4300);
+
+}
+
+
+/* BOUTON */
+function downloadDemo() {
+
+  alert(
+    "Ceci est une démonstration. Aucun téléchargement d'application ou paiement réel n'est effectué."
+  );
+
+}
+
+</script>
+
+</body>
+</html>
